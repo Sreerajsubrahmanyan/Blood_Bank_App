@@ -1,24 +1,23 @@
-# README
+Blood Bank App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The Blood Bank App is a web-based platform that helps users find blood donors and request blood easily. Users can register, donate blood, search for donors by blood group and location, and send blood requests directly to donors via email. Donors can manage and accept requests, making the donation process quick and efficient.
 
-Things you may want to cover:
+Features
 
-* Ruby version
+User Authentication
+Secure login and registration using Devise.
 
-* System dependencies
+Donate Blood
+Registered users can offer to donate blood by submitting their blood group and location.
 
-* Configuration
+Search for Donors
+Users can search for available donors based on blood group and location.
 
-* Database creation
+Send Blood Requests
+Users can send personalized requests directly to donors, and requests are notified via email.
 
-* Database initialization
+Request Management
+Donors can view, accept, or manage incoming blood requests through a dedicated interface.
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Email Notifications
+Blood donation requests are sent via email to donors using ActionMailer.
