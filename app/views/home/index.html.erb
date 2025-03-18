@@ -1,0 +1,202 @@
+<style>
+  .auth-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('/assets/hypertension-7210325_1280.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 1000;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .auth-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .auth-quote {
+    font-size: 1.5rem;
+    font-style: italic;
+    margin-bottom: 30px;
+  }
+
+  .auth-container {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    color: black;
+  }
+
+.auth-container h2 {
+    text-shadow: none;
+    font-weight: bold;
+    color: #dc3545;
+
+.auth-container p {
+    text-shadow: none;
+    color: #333; 
+}
+
+.auth-container .btn {
+    box-shadow: none; 
+    background: none; 
+    border: 2px solid transparent; 
+    transition: background 0.3s, color 0.3s; 
+}
+
+.auth-container .btn-primary {
+    background-color: #007bff; 
+    color: white;
+}
+
+.auth-container .btn-primary:hover {
+    background-color: #0056b3; 
+}
+
+.auth-container .btn-outline-primary {
+    background-color: #007bff; 
+    color: white;
+    border-color: #007bff;
+}
+
+.auth-container .btn-outline-primary:hover {
+    background-color: #0056b3; 
+    color: white;
+}
+
+
+  body.no-scroll {
+    overflow: hidden;
+  }
+</style>
+
+<% if user_signed_in? %>
+  <div class="container mt-5">
+    <h1 class="text-danger text-center fw-bold display-4">Welcome to Blood Bank App</h1>
+
+    <div class="text-center my-5">
+      <h5 class="text-muted fst-italic fs-3">"Not all heroes wear capes; some donate blood."</h5>
+    </div>
+
+    <div class="alert alert-success text-center fs-4">
+      <p>Hello, <%= current_user.username %>!</p>
+      <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger btn-lg" %>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm p-4">
+          <h2 class="text-center text-primary fs-2">Search Blood Donors</h2>
+
+          <%= form_with url: search_donors_path, method: :get, local: true, class: "mt-3" do |f| %>
+            <div class="mb-3">
+              <%= f.label :blood_group, "Blood Group", class: "form-label fs-5" %>
+              <%= f.select :blood_group, Donation::BLOOD_GROUPS, prompt: "Select Blood Group", class: "form-select fs-5" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :location, "Location", class: "form-label fs-5" %>
+              <%= f.text_field :location, class: "form-control fs-5" %>
+            </div>
+            <div class="d-grid gap-2">
+              <%= f.submit "Search", class: "btn btn-primary btn-lg" %>
+              <%= link_to "Clear Search", search_donors_path(clear: true), class: "btn btn-secondary btn-lg" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+<div class="container mt-5">
+  
+<% if @donors.present? %>
+  <div class="card p-4 shadow-lg rounded-4 border-0 mb-4" 
+       style="background: rgba(227, 255, 227, 0.85); backdrop-filter: blur(10px);">
+    <h2 class="text-center text-success fw-bold mb-3">Search Results</h2>
+    <div class="list-group">
+      <% @donors.each do |donor| %>
+        <div class="list-group-item rounded-3 shadow-sm border-0 p-3 mb-2 d-flex justify-content-between align-items-center"
+             style="background: white; transition: all 0.3s;">
+          
+          <div>
+            <strong class="text-dark"><%= donor.user.username %></strong> 
+            <span class="text-danger fw-semibold">(Blood Group: <%= donor.blood_group %>)</span>  
+            - <span class="text-muted"><%= donor.location %></span>
+          </div>
+
+          <div>
+            <%= link_to "Send Request", send_request_form_donor_path(donor), 
+                        class: "btn btn-warning btn-sm" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+
+
+  <div class="card p-4 shadow-lg rounded-4 border-0" 
+       style="background: rgba(255, 245, 245, 0.85); backdrop-filter: blur(10px);">
+    <h2 class="text-center text-danger fw-bold mb-3">Available Blood Requests</h2>
+
+    <% if @requests.any? %>
+      <div class="list-group">
+        <% @requests.each do |request| %>
+          <div class="list-group-item d-flex justify-content-between align-items-center rounded-3 shadow-sm border-0 p-3 mb-2"
+               style="background: white; transition: all 0.3s;">
+            <p class="m-0 text-dark">
+              <strong><%= request.name %></strong> 
+              <span class="text-danger fw-semibold">needs <%= request.blood_group %> blood</span> 
+              in <span class="text-muted"><%= request.location %></span>
+            </p>
+            <%= link_to "Accept Request", accept_blood_request_path(request), 
+                class: "btn btn-outline-primary btn-lg rounded-pill fw-semibold px-4 btn-hover" %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-center text-muted fs-4">No blood requests available.</p>
+    <% end %>
+  </div>
+
+  <div class="text-center mt-4">
+    <%= link_to "Donate Blood", new_donation_path, 
+        class: "btn btn-success btn-lg rounded-pill fw-bold me-3 px-4 action-btn" %>
+    <%= link_to "Request Blood", new_blood_request_path, 
+        class: "btn btn-warning btn-lg rounded-pill fw-bold px-4 action-btn" %>
+  </div>
+
+</div>
+
+
+<% else %>
+  <body class="no-scroll">
+    <div class="auth-background">
+      <h1 class="auth-title">Welcome to Blood Bank App</h1>
+
+      <p class="auth-quote">"Not all heroes wear capes; some donate blood."</p>
+
+      <div class="auth-container">
+        <h2 class="text-danger fw-bold fs-3">Join Us Today</h2>
+        <p class="text-dark fs-5">Sign up or log in to find and request blood donors.</p>
+        <div class="mt-4">
+          <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-outline-primary btn-lg me-3" %>
+          <%= link_to "Login", new_user_session_path, class: "btn btn-primary btn-lg" %>
+        </div>
+      </div>
+    </div>
+  </body>
+<% end %>

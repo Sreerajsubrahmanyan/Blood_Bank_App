@@ -1,0 +1,51 @@
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card p-5 rounded-4 shadow-lg" 
+       style="max-width: 500px; width: 100%; border: none; background: linear-gradient(to bottom, #fff5f5, #ffe3e3);">
+    
+    <h2 class="text-center fw-bold mb-4" style="color: #dc3545;">Create an Account</h2>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: "mt-3") do |f| %>
+
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label fw-semibold", style: "color: #6c757d;" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+            class: "form-control rounded-pill p-3 border-0 input-field", 
+            required: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, class: "form-label fw-semibold", style: "color: #6c757d;" %>
+        <% if @minimum_password_length %>
+          <em class="text-muted d-block">Minimum <%= @minimum_password_length %> characters</em>
+        <% end %>
+        <%= f.password_field :password, autocomplete: "new-password", 
+            class: "form-control rounded-pill p-3 border-0 input-field", 
+            required: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password_confirmation, class: "form-label fw-semibold", style: "color: #6c757d;" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", 
+            class: "form-control rounded-pill p-3 border-0 input-field", 
+            required: true %>
+      </div>
+
+      <div class="d-grid">
+        <%= f.submit "Sign Up", class: "btn btn-danger btn-lg rounded-pill fw-bold signup-btn" %>
+      </div>
+
+    <% end %>
+
+    <div class="text-center mt-4">
+      <p class="text-muted">Already have an account? 
+        <%= link_to "Log in", new_session_path(resource_name), 
+            class: "text-decoration-none login-link" %>
+      </p>
+      <%= link_to "← Back to Home", root_path, 
+          class: "btn btn-outline-danger mt-3 rounded-pill px-4 home-btn" %>
+    </div>
+
+  </div>
+</div>

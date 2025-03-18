@@ -1,0 +1,20 @@
+<div class="container mt-5">
+  <h2 class="text-center text-danger fw-bold">Send Blood Request to <%= @donation.name %></h2>
+
+  <div class="card p-4 mt-4 shadow-sm">
+    <p><strong>Blood Group:</strong> <%= @donation.blood_group %></p>
+    <p><strong>Location:</strong> <%= @donation.location %></p>
+
+    <%= form_with url: send_request_donor_path(@donation), method: :post, local: true do |f| %>
+      <div class="mb-3">
+        <%= f.label :message, "Message", class: "form-label" %>
+        <%= f.text_area :message, class: "form-control", rows: 5 %>
+      </div>
+      <div class="d-grid">
+        <%= f.submit "Send Request", class: "btn btn-success" %>
+      </div>
+    <% end %>
+    <%= link_to "Back to Home", root_path, class: "btn btn-secondary" %>
+
+  </div>
+</div>

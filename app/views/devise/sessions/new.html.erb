@@ -1,0 +1,50 @@
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card shadow-lg p-5 rounded-4" 
+       style="max-width: 450px; width: 100%; border: none; background: linear-gradient(to bottom, #fff5f5, #ffe3e3);">
+    
+    <h2 class="text-center fw-bold mb-4" style="color: #dc3545;">Welcome Back</h2>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "mt-3") do |f| %>
+
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label fw-semibold", style: "color: #6c757d;" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+            class: "form-control rounded-pill p-3 border-0 input-field", 
+            required: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, class: "form-label fw-semibold", style: "color: #6c757d;" %>
+        <%= f.password_field :password, autocomplete: "current-password", 
+            class: "form-control rounded-pill p-3 border-0 input-field", 
+            required: true %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="form-check mb-3">
+          <%= f.check_box :remember_me, class: "form-check-input border-danger" %>
+          <%= f.label :remember_me, class: "form-check-label ms-1", style: "color: #6c757d;" %>
+        </div>
+      <% end %>
+
+      <div class="d-grid">
+        <%= f.submit "Log in", class: "btn btn-danger btn-lg rounded-pill fw-bold login-btn" %>
+      </div>
+
+    <% end %>
+
+    <div class="text-center mt-4">
+      <p class="text-muted">Forgot your password? 
+        <%= link_to "Reset it here", new_password_path(resource_name), 
+            class: "text-decoration-none reset-link" %>
+      </p>
+      <p class="text-muted">New here? 
+        <%= link_to "Sign up", new_user_registration_path, 
+            class: "text-decoration-none signup-link" %>
+      </p>
+      <%= link_to "← Back to Home", root_path, 
+          class: "btn btn-outline-danger mt-3 rounded-pill px-4 home-btn" %>
+    </div>
+
+  </div>
+</div>
